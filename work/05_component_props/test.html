@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05_component_props</title>
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <script type="text/javascript" src="../js/prop-types.min.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+    /*
+    * 需求：自定义用来显示一个人员信息的组件，效果如页面。说明
+    * 1. 如果性别没有指定，默认为男
+    * 2. 如果年龄没有指定，默认为18
+    * */
+    //1.定义组件
+    function Person(props) {
+        return(
+            <ul>
+                <li>姓名：{props.name}</li>
+                <li>年龄：{props.age}</li>
+                <li>性别：{props.sex}</li>
+            </ul>
+        )
+    }
+
+
+
+    Person.defaultProps={
+        sex:'男',
+        age:'19'
+    };
+
+    Person.propTypes = {
+        name: PropTypes.string
+        age: PropTypes.num
+    };
+
+    class Like extends React.Component{
+        constructor(props){
+            super(props)
+            this.state = {
+                isLikeMe : false
+            }
+
+            this.handleClick = this.handleClick.bind(this)
+
+        }
+        // 新添加方法：内部的this默认不是组件对象，而是underfined
+        handleClick(){
+            console.log('handleClick',this)
+            // 得到状态并取反
+            const  isLikeMe = !this.state.isLikeMe
+            this.setState({isLikeMe})
+        }
+
+        render(){
+            const {isLikeMe} = this.state
+            return <h2 onClick={this.handleClick}>{ isLikeMe?'你喜欢我':'我喜欢你'}</h2>
+        }
+    }
+
+
+
+    //2.渲染组件标签
+
+    const p1 = {
+        name:'Tom',
+        age:18,
+        sex:'女'
+    }
+    const p2 = {
+        name:'JACK',
+    }
+
+    ReactDOM.render(<Person {...p1} />,document.getElementById('example1'))
+    ReactDOM.render(<Person  age={19} />,document.getElementById('example2'))
+
+</script>
+</body>
+</html>

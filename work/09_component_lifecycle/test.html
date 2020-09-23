@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>09_component_lifecycle</title>
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <script type="text/javascript" src="../js/prop-types.min.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+    /*
+    * 需求：自定义组件，功能说明如下
+    * 1. 让指定的文本做显示/隐藏的动画
+    * 2. 切换时间为2S
+    * 3. 点击按钮从界面中移出组件界面
+    *ssf
+    * sst
+    * est
+    * */
+    //1.定义组件
+    class Life extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                opacity:0.5
+            };
+
+            this.distoryComponent = this.distoryComponent.bind(this);
+        }
+
+
+        distoryComponent(){
+            ReactDOM.unmountComponentAtNode(document.getElementById('example1'))
+        }
+
+        componentDidMount() {
+            //启动循环定时器
+             this.intervalId = setInterval(() => {
+                 console.log("定时器执行...")
+                let {opacity} = this.state
+                opacity -= 0.1
+                if(opacity<=0){
+                    opacity = 1
+                }
+                this.setState({opacity});
+            },200)
+        }
+
+        componentWillUnmount() {
+            //清理定时器
+            clearInterval(this.intervalId)
+        }
+
+
+        render() {
+            const {opacity} = this.state
+            return (
+                <div>
+                    <h2 style={{opacity}}>{this.props.msg}</h2>
+                    <button onClick={this.distoryComponent}>不活了</button>
+                </div>
+            );
+        }
+
+        cd
+    }
+
+
+    //2.渲染组件标签
+
+
+    ReactDOM.render(<Life msg="react太难了！"/>,document.getElementById('example1'))
+    // <!--ReactDOM.render(<Person  age={19} />,document.getElementById('example2'))-->
+
+</script>
+</body>
+</html>

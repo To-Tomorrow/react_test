@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08_component_from</title>
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <script type="text/javascript" src="../js/prop-types.min.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+    /*
+    * 需求：自定义组件，功能说明如下
+    * 1. 界面如页面所示
+    * 2. 输入用户名密码后，点击登陆提示输入信息
+    * 3. 不提交表单
+    *ssf
+    * sst
+    * est
+    * */
+    //1.定义组件
+    class LoginFrom extends React.Component{
+        constructor(props) {
+            super(props);
+            this.handleSubmit = this.handleSubmit.bind(this);
+            this.handleChange = this.handleChange.bind(this);
+            this.state = {
+                pwd: ''
+            };
+        }
+
+        handleSubmit(event){
+            const name = this.nameInput.value
+            const {pwd} = this.state
+            alert(`准备提交的用户名为${name},密码为${pwd}`)
+            //阻止时间的默认行为
+            event.preventDefault()
+        }
+
+       handleChange(e) {
+           //读取输入的值
+           const pwd = e.target.value
+           //更新pwd的状态
+           this.setState({pwd});
+
+
+       }
+
+
+        render() {
+            return(
+                <form action="/test" onSubmit={this.handleSubmit}>
+                    用户名：<input type="text" ref={input=> this.nameInput = input}/>
+                    密码：<input type="password" value={this.state.pwd} onChange={this.handleChange}/>
+                    <input type="submit" value="登陆"/>
+                </form>
+            )
+        }
+    }
+
+
+
+    //2.渲染组件标签
+
+
+    ReactDOM.render(<LoginFrom />,document.getElementById('example1'))
+    // <!--ReactDOM.render(<Person  age={19} />,document.getElementById('example2'))-->
+
+</script>
+</body>
+</html>
